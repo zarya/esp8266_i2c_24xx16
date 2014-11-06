@@ -38,20 +38,29 @@ eeprom_readByte(uint8 address, uint8 location)
     uint8 data;
 
     i2c_start();
+    i2c_writeByte(address << 1);     
+    if (!i2c_check_ack())
+    {
+        i2c_stop();
+        return 0;
+    }
+
+    i2c_writeByte(location);
+    if (!i2c_check_ack())
+    {
+        i2c_stop();
+        return 0;
+    }
+
+    i2c_start();
     write_address = address << 1;
     write_address |= 1;
     i2c_writeByte(write_address);
     if (!i2c_check_ack())
+    {
+        i2c_stop();
         return 0;
-
-    i2c_writeByte(location);
-    if (!i2c_check_ack())
-        return 0;
-
-    i2c_start();
-    i2c_writeByte(address << 1);     
-    if (!i2c_check_ack())
-        return 0;
+    }
     data = i2c_readByte();
     i2c_stop();
     return data;
@@ -74,16 +83,25 @@ char ICACHE_FLASH_ATTR
     write_address |= 1;
     i2c_writeByte(write_address);
     if (!i2c_check_ack())
+    {
+        i2c_stop();
         return 0;
+    }
 
     i2c_writeByte(location);
     if (!i2c_check_ack())
+    {
+        i2c_stop();
         return 0;
+    }
 
     i2c_start();
     i2c_writeByte(address << 1);     
     if (!i2c_check_ack())
+    {
+        i2c_stop();
         return 0;
+    }
 
     uint8 i;
     for (i = 0; i < len; i++)
@@ -106,15 +124,29 @@ uint8 ICACHE_FLASH_ATTR
 eeprom_writeByte(uint8 address, uint8 location, uint8 data)
 {
     i2c_start();
+    //Write address
     i2c_writeByte(address << 1);     
     if (!i2c_check_ack())
+    {
+        i2c_stop();
         return 0;
+    }
 
-    i2c_writeByte(data);
-    i2c_check_ack();
+    //Write memory location
+    i2c_writeByte(location);
     if (!i2c_check_ack())
+    {
+        i2c_stop();
         return 0;
+    }
 
+    //Write data
+    i2c_writeByte(data);
+    if (!i2c_check_ack())
+    {
+        i2c_stop();
+        return 0;
+    }
     i2c_stop();
     return 1;
 }
@@ -132,15 +164,27 @@ eeprom_writePage(uint8 address, uint8 location, char data[], uint8 len)
     i2c_start();
     i2c_writeByte(address << 1);     
     if (!i2c_check_ack())
+    {
+        i2c_stop();
         return 0;
+    }
+
+    i2c_writeByte(location);
+    if (!i2c_check_ack())
+    {
+        i2c_stop();
+        return 0;
+    }
 
     uint8 i;
     for (i = 0; i < len; i++)
     {
         i2c_writeByte(data[i]);
-        i2c_check_ack();
         if (!i2c_check_ack())
+        {
+            i2c_stop();
             return 0;
+        }
     }
 
     i2c_stop();
