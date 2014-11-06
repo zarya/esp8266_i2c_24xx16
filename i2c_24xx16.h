@@ -1,3 +1,6 @@
+#ifndef __I2C_24xx16_H__
+#define __I2C_24xx16_H__
+#endif
 /*
     Driver for the 24xx16 series serial EEPROM from Microchip
     This driver depends on the I2C driver https://github.com/zarya/esp8266_i2c_driver/
