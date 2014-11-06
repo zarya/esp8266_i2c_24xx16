@@ -34,8 +34,10 @@
 uint8 ICACHE_FLASH_ATTR
 eeprom_readByte(uint8 address, uint8 location)
 {
+    uint8 write_address;
+    uint8 data;
+
     i2c_start();
-    uint8 write_address
     write_address = address << 1;
     write_address |= 1;
     i2c_writeByte(write_address);
@@ -63,10 +65,10 @@ eeprom_readByte(uint8 address, uint8 location)
 char ICACHE_FLASH_ATTR
 *eeprom_readPage(uint8 address, uint8 location, uint8 len)
 {
-    char data[len];
+    static char data[256];
 
     i2c_start();
-    uint8 write_address
+    uint8 write_address;
     write_address = address << 1;
     write_address |= 1;
     i2c_writeByte(write_address);
@@ -90,7 +92,7 @@ char ICACHE_FLASH_ATTR
     }
 
     i2c_stop();
-    return data
+    return data;
 }
 
 /**
@@ -107,7 +109,7 @@ eeprom_writeByte(uint8 address, uint8 location, uint8 data)
     if (!i2c_check_ack())
         return 0;
 
-    i2c_writeByte(data[i]);
+    i2c_writeByte(data);
     i2c_checkAck();
     if (!i2c_check_ack())
         return 0;
