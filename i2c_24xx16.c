@@ -54,6 +54,7 @@ eeprom_readByte(uint8 address, uint8 location)
         return 0;
     data = i2c_readByte();
     i2c_stop();
+    return data;
 }
 
 /**
@@ -88,7 +89,7 @@ char ICACHE_FLASH_ATTR
     for (i = 0; i < len; i++)
     {
         data[i] = i2c_readByte();
-        i2c_sendAck(1);
+        i2c_send_ack(1);
     }
 
     i2c_stop();
@@ -110,7 +111,7 @@ eeprom_writeByte(uint8 address, uint8 location, uint8 data)
         return 0;
 
     i2c_writeByte(data);
-    i2c_checkAck();
+    i2c_check_ack();
     if (!i2c_check_ack())
         return 0;
 
@@ -137,7 +138,7 @@ eeprom_writePage(uint8 address, uint8 location, char data[], uint8 len)
     for (i = 0; i < len; i++)
     {
         i2c_writeByte(data[i]);
-        i2c_checkAck();
+        i2c_check_ack();
         if (!i2c_check_ack())
             return 0;
     }
