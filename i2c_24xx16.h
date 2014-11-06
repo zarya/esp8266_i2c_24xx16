@@ -21,7 +21,7 @@
 #include "ets_sys.h"
 #include "osapi.h"
 
-uint8 24xx16_readByte(uint8 address, uint8 location);
-char *24xx16_readPage(uint8 address, uint8 location, uint8 len);
-uint8 24xx16_writeByte(uint8 address, uint8 location, uint8 data);
-uint8 24xx16_writePage(uint8 address, uint8 location, char data[], uint8 len);
+uint8 eeprom_readByte(uint8 address, uint8 location);
+char *eeprom_readPage(uint8 address, uint8 location, uint8 len);
+uint8 eeprom_writeByte(uint8 address, uint8 location, uint8 data);
+uint8 eeprom_writePage(uint8 address, uint8 location, char data[], uint8 len);

@@ -32,7 +32,7 @@
  * uint8 location   : The memory location to read
  */
 uint8 ICACHE_FLASH_ATTR
-24xx16_readByte(uint8 address, uint8 location)
+eeprom_readByte(uint8 address, uint8 location)
 {
     i2c_start();
     uint8 write_address
@@ -61,7 +61,7 @@ uint8 ICACHE_FLASH_ATTR
  * uint8 len        : Number of bytes to read
  */
 char ICACHE_FLASH_ATTR
-*24xx16_readPage(uint8 address, uint8 location, uint8 len)
+*eeprom_readPage(uint8 address, uint8 location, uint8 len)
 {
     char data[len];
 
@@ -100,7 +100,7 @@ char ICACHE_FLASH_ATTR
  * uint8 data       : Data to write to the EEPROM
  */
 uint8 ICACHE_FLASH_ATTR
-24xx16_writeByte(uint8 address, uint8 location, uint8 data)
+eeprom_writeByte(uint8 address, uint8 location, uint8 data)
 {
     i2c_start();
     i2c_writeByte(address << 1);     
@@ -124,7 +124,7 @@ uint8 ICACHE_FLASH_ATTR
  * uint8 len        : The lenght of the data
  */
 uint8 ICACHE_FLASH_ATTR
-24xx16_writePage(uint8 address, uint8 location, char data[], uint8 len)
+eeprom_writePage(uint8 address, uint8 location, char data[], uint8 len)
 {
     i2c_start();
     i2c_writeByte(address << 1);     
